@@ -158,7 +158,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <UserDropdown isOpen={true} setIsOpen={()=>console.log('red')} />
         </div>
       </div>
     </header>
