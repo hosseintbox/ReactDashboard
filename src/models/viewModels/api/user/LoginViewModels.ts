@@ -1,6 +1,10 @@
 export interface ILoginRequest {
-  email?: string;
+  userName?: string;
   password: string;
+  validationMethod:number;
+  phonePrefix?:number | string;
+  securityCode: number;
+
 }
 
 export interface ILoginResponse {

@@ -8,12 +8,12 @@ import {
 import { DefaultApiHeader } from "../../../services/api/ApiHeader";
 import { SetUserToken } from "../../../services/api/ApiToken";
 import Api from "../../../services/api/CallApi";
-import { LoginRequest } from "../../../setting/ApiUrl";
+import { SignIn } from "../../../setting/ApiUrl";
 import * as Yup from "yup";
 
 export const LoginService = async (loginInfo: ILoginRequest) => {
   const result = await Api<ILoginResponse>(
-    LoginRequest,
+    SignIn,
     loginInfo,
     DefaultApiHeader,
     HttpMethod.POST
