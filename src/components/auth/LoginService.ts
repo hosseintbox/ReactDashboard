@@ -14,13 +14,14 @@ import * as Yup from "yup";
 export const LoginService = async (loginInfo: ILoginRequest) => {
   const result = await Api<ILoginResponse>(
     SignIn,
-    { inputData: loginInfo }, 
+    { model: loginInfo }, 
     DefaultApiHeader,
     HttpMethod.POST
   );
 
   if (result.status === HttpStatus.OK) {
-    await SetUserToken(result.data?.token ?? "");
+    console.log("result.data" ,result.data?.objectResult?.accessTokens)
+    await SetUserToken(result.data?.objectResult?.accessTokens ?? "");
   }
   return result;
 };

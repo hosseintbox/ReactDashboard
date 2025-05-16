@@ -13,7 +13,7 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 
 
-const SignUpForm = () => {
+const NewRequestForm = () => {
   interface Prefix {
   id: number;
   name: string;
@@ -293,4 +293,4 @@ return (
 
 };
 
-export default SignUpForm;
+export default NewRequestForm;

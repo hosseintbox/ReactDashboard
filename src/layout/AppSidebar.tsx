@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
+  RequestIcon ,
   BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
@@ -27,8 +28,8 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
-    name: "Dashboard",
+    icon: <RequestIcon />,
+    name: "ثبت درخواست جدید",
     path: "/"
   },
   {

@@ -8,14 +8,14 @@ interface InputProps {
   placeholder?: string;
   value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // ✅ اضافه شد
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
   max?: string;
   step?: number;
   disabled?: boolean;
   success?: boolean;
-  error?: boolean | string; // ✅ پشتیبانی از خطا
+  error?: boolean | string;
   hint?: string;
 }
 
@@ -26,7 +26,7 @@ const Input: FC<InputProps> = ({
   placeholder,
   value,
   onChange,
-  onBlur, // ✅ اضافه شد
+  onBlur,
   className = "",
   min,
   max,
@@ -48,7 +48,7 @@ const Input: FC<InputProps> = ({
   } else if (success) {
     inputClasses += ` border-success-500 focus:border-success-300 focus:ring-success-500/20 dark:text-success-400 dark:border-success-500 dark:focus:border-success-800`;
   } else {
-    inputClasses += ` bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90 dark:focus:border-brand-800`;
+    inputClasses += ` bg-transparent text-gray-800 border-gray-300 focus:border-black focus:ring-black/20 dark:border-gray-700 dark:text-white/90 dark:focus:border-white`;
   }
 
   return (
@@ -60,7 +60,7 @@ const Input: FC<InputProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onBlur={onBlur} // ✅ اینجا هم اضافه شد
+        onBlur={onBlur}
         min={min}
         max={max}
         step={step}

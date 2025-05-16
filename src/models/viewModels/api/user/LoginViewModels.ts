@@ -8,10 +8,21 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-  isSuccess: boolean;
+  validationResult: any | null;
+  requestStatus: {
+    name: string;
+    value: number;
+  };
   message: string;
-  token: string;
-  result: boolean;
-  errors: null | string;
-  data: boolean;
+  objectResult: {
+    userFullName: string;
+    samAccountName: string | null;
+    accessTokens: string;
+    tokenId: string;
+    refreshToken: string;
+  };
+  notificationType: {
+    name: string;
+    value: number;
+  };
 }

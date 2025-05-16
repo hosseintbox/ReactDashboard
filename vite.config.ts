@@ -15,4 +15,13 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://nexterra.draton.io',  // آدرس سرور بک‌اند
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

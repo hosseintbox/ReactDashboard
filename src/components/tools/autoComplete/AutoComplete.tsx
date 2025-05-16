@@ -2,16 +2,17 @@ import React, { ReactNode, useState, useEffect, useRef } from "react";
 import { useField, useFormikContext } from "formik";
 import { FieldTheme } from "../../../models/enums/FieldTheme";
 import { IDropDown } from "../../../models/viewModels/common/IDropDown";
-import { ReactComponent as ChevronDownIcon } from "../../../components/icons/svg/arrow-down.svg";
-import { ReactComponent as CloseRedIcon } from "../../../components/icons/svg/closeRedIcon.svg";
+// import { ReactComponent as ChevronDownIcon } from "../../../icons/arrow-down.svg";
+// import { ReactComponent as CloseRedIcon } from "../../../icons/closeRedIcon.svg";
 import Loading from "../../../components/tools/loading/Loading";
+import { CloseRedIcon, ChevronDownIcon } from "../../../icons";
 
 interface Props {
   name: string;
   placeholder?: string;
   label?: string;
   className?: string;
-  innerClassName?: string;
+  innerClassName?:string;
   help?: string | ReactNode;
   icon?: ReactNode;
   onChange?: any;
@@ -47,35 +48,28 @@ const AutoComplete: React.FC<Props> = ({
   const [selectedLabel, setSelectedLabel] = useState("");
   const [multySelect, setMultySelect] = useState<IDropDown[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const hasInitialized = useRef(false); // برای readonly
 
   useEffect(() => {
     setFilteredOptions(options);
   }, [options]);
 
+  // برای حالت تک انتخابی: اگر مقدار اولیه وجود داشته باشد، برچسب گزینه انتخاب شده تنظیم شود.
   useEffect(() => {
-    if (!isMulty) {
-      const selectedOption = options?.find((opt) => opt.value === field.value);
-
-      if (readonly) {
-        if (!hasInitialized.current && selectedOption) {
-          setSelectedLabel(selectedOption.label);
-          hasInitialized.current = true;
-        }
-      } else {
-        setSelectedLabel(selectedOption?.label || "");
+    if (field.value && !isMulty) {
+      const selectedOption = options.find((opt) => opt.value === field.value);
+      if (selectedOption) {
+        setSelectedLabel(selectedOption.label);
       }
     }
-  }, [field.value, options, isMulty, readonly]);
+  }, [field.value, options, isMulty]);
 
+  // اگر حالت چند انتخابی فعال باشد و field.value آرایه‌ای از مقادیر باشد، state انتخاب‌های چندگانه را مقداردهی اولیه می‌کنیم.
   useEffect(() => {
     if (isMulty && Array.isArray(field.value)) {
-      const selectedOptions = options?.filter((opt) =>
+      const selectedOptions = options.filter((opt) =>
         field.value.includes(opt.value)
       );
       setMultySelect(selectedOptions);
-    } else if (isMulty) {
-      setMultySelect([]);
     }
   }, [field.value, options, isMulty]);
 
@@ -114,6 +108,7 @@ const AutoComplete: React.FC<Props> = ({
       if (!multySelect.some((item) => item.value === option.value)) {
         const updatedSelection = [...multySelect, option];
         setMultySelect(updatedSelection);
+        // مقدار فرم فقط شامل مقادیر (value) می‌شود
         setFieldValue(
           name,
           updatedSelection.map((item) => item.value)
@@ -147,11 +142,7 @@ const AutoComplete: React.FC<Props> = ({
   return (
     <div className={`form-control w-full ${className}`} ref={wrapperRef}>
       {label && (
-        <label
-          className={`label ${
-            readonly ? "text-[#6B7280]" : "text-gray-900 "
-          } font-semibold text-sm`}
-        >
+        <label className="label text-gray-900 font-semibold text-sm">
           {label}
         </label>
       )}
@@ -161,28 +152,21 @@ const AutoComplete: React.FC<Props> = ({
           onClick={toggleDropdown}
         >
           {icon && <div className="p-2 absolute right-4 top-2">{icon}</div>}
-          <input
-            type="text"
-            placeholder={placeholder}
-            value={!isMulty ? selectedLabel || "" : ""}
-            onChange={handleInputChange}
-            className={`input w-full text-base text-[#6B7280] font-medium 
-                        rounded-[12px] h-[48px] focus-within:outline-[0px]  
-                        focus-within:border-none
-                        ${readonly ? "hover:cursor-default border-none" : ""}
-                        ${
-                          theme === FieldTheme.Primary
-                            ? "bg-[#FFF]"
-                            : "bg-[#F3F4F6]"
-                        } 
-                        ${icon && "pr-12"}
-                        ${
-                          touched && error ? "input-error" : ""
-                        } ${inputClassName}`}
-            disabled={readonly}
-            autoComplete="off"
-          />
-          {!readonly && (
+<input
+  type="text"
+  placeholder={placeholder}
+  value={!isMulty ? selectedLabel || "" : ""}
+  onChange={handleInputChange}
+  className={`input w-full text-base text-[#6B7280] font-medium 
+              rounded-[12px] h-[40px] mt-[7px] focus-within:outline-[0px]  
+              ${readonly ? "hover:cursor-default border-none" : ""}
+              ${theme === FieldTheme.Primary ? "bg-[#FFF]" : "bg-[#F3F4F6]"} 
+              ${icon && "pr-12"}
+              pr-[14px]  // 👈 اضافه‌شده برای جلو آوردن placeholder
+              text-right
+              ${touched && error ? "input-error" : ""} ${inputClassName}`}
+/>
+          {readonly === false && (
             <button
               type="button"
               className="absolute left-4 focus:outline-none"
@@ -222,10 +206,12 @@ const AutoComplete: React.FC<Props> = ({
                 className="border-2 max-w-fit rounded-lg border-[#FF7959] bg-[#FF7F7E10] flex items-center text-[#FF7959] text-[12px] font-bold py-1 px-3 gap-1"
               >
                 {value.label}
-                <CloseRedIcon
-                  className="cursor-pointer"
-                  onClick={() => handleRemove(value.label)}
-                />
+                {!readonly && (
+                  <CloseRedIcon
+                    className="cursor-pointer"
+                    onClick={() => handleRemove(value.label)}
+                  />
+                )}
               </div>
             ))}
           </div>

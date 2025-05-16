@@ -17,13 +17,16 @@ import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
+import { queryClient } from "./setting/reactQuery/QueryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 
 export default function App() {
   return (
     <>
-      <Router>
+          <QueryClientProvider client={queryClient}>
+  <Router>
         <ScrollToTop />
         <Routes>
           {/* Dashboard Layout */}
@@ -63,6 +66,8 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
+          </QueryClientProvider>
+    
     </>
   );
 }

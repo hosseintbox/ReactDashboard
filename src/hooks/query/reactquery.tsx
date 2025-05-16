@@ -3,61 +3,59 @@ import {
   UseQueryResult,
   useMutation,
   UseMutationResult,
-} from "react-query";
-import Api from "../../../services/api/CallApi";
-import { HttpMethod } from "../../../models/enums/HttpMethod"; // وارد کردن HttpMethod
-import { ApiResponse } from "../../../models/viewModels/api/ApiResponse"; // وارد کردن ApiResponse
+} from "@tanstack/react-query";
+import Api from "../../services/api/CallApi";
+import { HttpMethod } from "../../models/enums/HttpMethod";
+import { ApiResponse } from "../../models/viewModels/api/ApiResponse";
 
-interface ApiDetails {
+interface ApiDetails<TBody = any> {
   url: string;
   method: HttpMethod;
-  headers: any;
-  body?: any;
+  headers?: Record<string, string>;
+  body?: TBody;
 }
 
-export const useFetchData = <T,>(apiDetails: ApiDetails) => {
-  const fetchData = async (): Promise<ApiResponse<T>> => {
-    const response = await Api<T>(
+export const useFetchData = <TResponse, TBody extends Record<string, any> = {}>(
+  apiDetails: ApiDetails<TBody>
+) => {
+  const fetchData = async (): Promise<ApiResponse<TResponse>> => {
+    return await Api<TResponse>(
       apiDetails.url,
       apiDetails.body || {},
-      apiDetails.headers,
+      apiDetails.headers || {},
       apiDetails.method
     );
-    return response;
   };
 
-  const queryResult: UseQueryResult<ApiResponse<T>, Error> = useQuery(
-    ["fetchData", apiDetails.url],
-    fetchData,
-    {
-      enabled: apiDetails.method === HttpMethod.GET, 
-    }
-  );
-
-  const mutationResult: UseMutationResult<
-    ApiResponse<T>,
-    Error,
-    any
-  > = useMutation(async (body: any) => {
-    const response = await Api<T>(
-      apiDetails.url,
-      body,
-      apiDetails.headers,
-      HttpMethod.POST
-    );
-    return response;
+  const queryResult = useQuery<ApiResponse<TResponse>, Error>({
+    queryKey: ["fetchData", apiDetails.url],
+    queryFn: fetchData,
+    enabled: apiDetails.method === HttpMethod.GET,
   });
 
-  
-  return {
+  const mutationResult = useMutation<
+    ApiResponse<TResponse>,
+    Error,
+    TBody
+  >({
+    mutationFn: async (body: TBody) => {
+      return await Api<TResponse>(
+        apiDetails.url,
+        body,
+        apiDetails.headers || {},
+        HttpMethod.POST
+      );
+    },
+  });
 
+  return {
     queryData: queryResult.data,
     queryError: queryResult.error,
     isQueryLoading: queryResult.isLoading,
 
-    // داده‌های مربوط به POST
-    postData: mutationResult.mutateAsync, // استفاده از mutateAsync برای دسترسی آسان به داده‌های POST
-    isMutating: mutationResult.isLoading,
+    postData: mutationResult.mutateAsync,
+    isMutating: mutationResult.isPending,
     mutationError: mutationResult.error,
   };
 };
+
