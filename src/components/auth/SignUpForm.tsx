@@ -41,11 +41,11 @@ useEffect(() => {
       );
       const rawPrefixes = response.data?.objectResult || [];
       console.log('rawPrefixes',rawPrefixes)
-      const formattedPrefixes = rawPrefixes.map((item: any) => ({
-        value: item.flag
+      const formattedPrefixes = rawPrefixes.listItems?.map((item: any) => ({
+        value: item.va
 ,
-         label: item.
-phonePrefix, 
+         label: item.label
+, 
       }));
 
       console.log("پیش‌شماره‌ها:", formattedPrefixes);
@@ -63,22 +63,20 @@ phonePrefix,
 const handleSubmitButtonClick = async (values: any) => {
   const data = {model:values }
   console.log("اطلاعات فرم:", data);
-  setLoading(true); // اگر از state مربوط به لودینگ استفاده می‌کنی
+  setLoading(true);
 
   try {
     const response: any = await Api(
-      SignUp, // مسیر API
-      data, // داده‌هایی که از فرم گرفته شده
+      SignUp, 
+      data,
       { "Content-Type": "application/json" },
       HttpMethod.POST
     );
 
     console.log("ثبت‌نام موفق:", response.data);
-    // TODO: در صورت موفقیت مثلاً نمایش پیام موفقیت یا رفتن به صفحه دیگر
 
   } catch (err) {
     console.error("خطا در ثبت‌نام:", err);
-    // TODO: نمایش پیام خطا به کاربر
   } finally {
     setLoading(false);
   }

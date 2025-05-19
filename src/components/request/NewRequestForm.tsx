@@ -1,125 +1,28 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
-import { HttpMethod } from "../../models/enums/HttpMethod";
-import AutoComplete from "../tools/autoComplete/AutoComplete";
-import Api from "../../services/api/CallApi";
-import { GetAllPhonePrefix ,SignUp} from "../../setting/ApiUrl";
-import Button from "../ui/button/Button";
-import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
+import Label from "../form/Label";
+import Button from "../ui/button/Button";
+import { EyeIcon, EyeCloseIcon } from "../../icons";
 
-
-const NewRequestForm = () => {
-  interface Prefix {
-  id: number;
-  name: string;
-  value: string;
-}
-  interface ApiResponse {
-  data: {
-    objectResult: Prefix[];
-  };
-}
+const SimpleSignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [prefixes, setPrefixes] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-console.log('prefixes',prefixes)
-useEffect(() => {
-  const fetchPrefixes = async () => {
-    setLoading(true);
-    try {
-      const response: any = await Api(
-        GetAllPhonePrefix,
-        {},
-        { "Content-Type": "application/json" },
-        HttpMethod.GET
-      );
-      const rawPrefixes = response.data?.objectResult || [];
-      console.log('rawPrefixes',rawPrefixes)
-      const formattedPrefixes = rawPrefixes.map((item: any) => ({
-        value: item.flag
-,
-         label: item.
-phonePrefix, 
-      }));
-
-      console.log("پیش‌شماره‌ها:", formattedPrefixes);
-      setPrefixes(formattedPrefixes);
-    } catch (err) {
-      console.error("خطا در دریافت پیش شماره‌ها", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchPrefixes();
-}, []);
-
-const handleSubmitButtonClick = async (values: any) => {
-  const data = {model:values }
-  console.log("اطلاعات فرم:", data);
-  setLoading(true); // اگر از state مربوط به لودینگ استفاده می‌کنی
-
-  try {
-    const response: any = await Api(
-      SignUp, // مسیر API
-      data, // داده‌هایی که از فرم گرفته شده
-      { "Content-Type": "application/json" },
-      HttpMethod.POST
-    );
-
-    console.log("ثبت‌نام موفق:", response.data);
-    // TODO: در صورت موفقیت مثلاً نمایش پیام موفقیت یا رفتن به صفحه دیگر
-
-  } catch (err) {
-    console.error("خطا در ثبت‌نام:", err);
-    // TODO: نمایش پیام خطا به کاربر
-  } finally {
-    setLoading(false);
-  }
-};
 
   const validationSchema = Yup.object({
-    fname: Yup.string().required("نام الزامی است"),
-    lname: Yup.string().required("نام خانوادگی الزامی است"),
     email: Yup.string().email("ایمیل نامعتبر است").required("ایمیل الزامی است"),
-    password: Yup.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد").required("رمز عبور الزامی است"),
+    password: Yup.string().min(6, "حداقل ۶ کاراکتر").required("رمز عبور الزامی است"),
     terms: Yup.boolean().oneOf([true], "پذیرش قوانین الزامی است"),
   });
 
-return (
-  <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar rtl">
-    <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
-      <Link
-        to="/"
-        className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-      >
-        <ChevronLeftIcon className="size-5  ml-1" />
-        بازگشت به داشبورد
-      </Link>
-    </div>
+  const handleSubmitButtonClick = (values: any) => {
+    console.log("اطلاعات فرم:", values);
+    // درخواست به API...
+  };
 
-    <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-      <div>
-        <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md text-right">
-          ثبت‌نام
-        </h1>
-        <p className="mb-5 text-sm text-gray-500 dark:text-gray-400 text-right">
-          برای ثبت‌نام، اطلاعات زیر را وارد کنید
-        </p>
-
-        {/* Divider */}
-        <div className="relative py-3 sm:py-5">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 dark:border-gray-800" />
-          </div>
-        </div>
-
+  return (
+   <div className="w-full max-w-md h-auto bg-white rounded-lg shadow-inherit">
         <Formik
           initialValues={{
             displayName: "",
@@ -171,15 +74,21 @@ return (
         className="text-right"
       />
     </div>
-     <AutoComplete
-      inputClassName="rounded-lg border border-gray-300 text-right"
-      className="rounded-lg"
-      name="phonePrefix"
-      value={values.phonePrefix}
-      options={prefixes}
-      placeholder="پیش شماره"
-      label="پیش شماره "
+     <div>
+    <Label>
+      نام نمایشی <span className="text-error-500">*</span>
+    </Label>
+    <Input
+      type="text"
+      name="displayName"
+      placeholder="نام نمایشی را وارد کنید"
+      value={values.displayName}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      error={touched.displayName && errors.displayName}
+      className="text-right"
     />
+  </div>
   </div>
 
   {/* ایمیل */}
@@ -278,19 +187,9 @@ return (
           )}
         </Formik>
 
-        <div className="mt-5">
-          <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-center">
-            قبلاً حساب دارید؟{" "}
-            <Link to="/signin" className="text-brand-500 hover:text-brand-600 dark:text-brand-400">
-              وارد شوید
-            </Link>
-          </p>
-        </div>
-      </div>
     </div>
-  </div>
-);
-
+    
+  );
 };
 
-export default NewRequestForm;
+export default SimpleSignUpForm;

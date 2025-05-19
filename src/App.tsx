@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
+import NewRequest from "./pages/Request/NewRequest";
 import NotFound from "./pages/OtherPage/NotFound";
 import UserProfiles from "./pages/UserProfiles";
 import Videos from "./pages/UiElements/Videos";
@@ -34,6 +35,7 @@ export default function App() {
          <Route path="/" element={<Navigate to="/signin" replace />} />
 
             {/* Others Page */}
+            <Route path="/NewRequest" element={<NewRequest/>}/>
              <Route path="/Home" element={<Home />} />
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />

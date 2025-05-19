@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
   {
     icon: <RequestIcon />,
     name: "ثبت درخواست جدید",
-    path: "/"
+    path: "/NewRequest"
   },
   {
     icon: <CalenderIcon />,

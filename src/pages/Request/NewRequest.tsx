@@ -1,6 +1,6 @@
 import PageMeta from "../../components/common/PageMeta";
 import FormLayout from "../../layout/FormLayout";
-import SignInForm from "../../components/auth/SignInForm";
+import NewRequestForm from "../../components/request/NewRequestForm";
 
 export default function NewRequest() {
   return (
@@ -10,7 +10,7 @@ export default function NewRequest() {
         description="This is React.js SignIn Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
       <FormLayout>
-        <SignInForm />
+        <NewRequestForm />
       </FormLayout>
     </>
   );
