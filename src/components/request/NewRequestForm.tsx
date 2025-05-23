@@ -1,195 +1,297 @@
 import { useState } from "react";
 import { Formik } from "formik";
+import MultiDatePicker from "../../components/tools/datepicker/MultiDatePicker";
+import TextArea from "../form/input/TextArea";
+import ImageUploader from "../tools/fileUpload/ImageUploader";
+import TextField from "../tools/textField/TextField";
 import * as Yup from "yup";
-import Input from "../form/input/InputField";
-import Checkbox from "../form/input/Checkbox";
-import Label from "../form/Label";
+import AutoComplete from "../tools/autoComplete/AutoComplete";
 import Button from "../ui/button/Button";
-import { EyeIcon, EyeCloseIcon } from "../../icons";
 
-const SimpleSignUpForm = () => {
+const countryList = [
+  {
+    value:1,
+    label:'آلمان'
+  },
+   {
+    value:1,
+    label:'کانادا'
+  }, {
+    value:1,
+    label:'انگلیس'
+  }
+]
+const ItemList = [
+  {
+    value:1,
+    label:'پت'
+  },
+   {
+    value:1,
+    label:'مدارک'
+  }, {
+    value:1,
+    label:'خوراک'
+  }
+]
+const RequestType =[
+   {
+    value:1,
+    label:'حمل کننده'
+  },
+   {
+    value:2,
+    label:'ارسال کننده'
+  }
+]
+const NewRequsetForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formFiles, setFormFiles] = useState<{ [key: string]: FileList }>({});
 
+  const handleFileChange = (name: string, files: FileList) => {
+    setFormFiles((prev) => ({ ...prev, [name]: files }));
+  };
   const validationSchema = Yup.object({
     email: Yup.string().email("ایمیل نامعتبر است").required("ایمیل الزامی است"),
     password: Yup.string().min(6, "حداقل ۶ کاراکتر").required("رمز عبور الزامی است"),
     terms: Yup.boolean().oneOf([true], "پذیرش قوانین الزامی است"),
   });
+const handleSubmit = (values: any) => {
+  const formData = new FormData();
 
-  const handleSubmitButtonClick = (values: any) => {
-    console.log("اطلاعات فرم:", values);
-    // درخواست به API...
-  };
+  Object.entries(values).forEach(([key, value]) => {
+    formData.append(key, value as string);
+  });
 
-  return (
-   <div className="w-full max-w-md h-auto bg-white rounded-lg shadow-inherit">
-        <Formik
-          initialValues={{
-            displayName: "",
-            phoneNumber: "",
-            phonePrefix:"",
-            email: "",
-            password: "",
-            inviteCode:"",
-            terms: false,
-          }}
-          // validationSchema={validationSchema}
-          onSubmit={handleSubmitButtonClick}
-        >
-          {({ values, handleChange, handleBlur, handleSubmit, touched, errors, setFieldValue }) => (
-          <form onSubmit={handleSubmit} className="space-y-5 text-right">
 
-  {/* نام نمایشی */}
-  <div>
-    <Label>
-      نام نمایشی <span className="text-error-500">*</span>
-    </Label>
-    <Input
-      type="text"
-      name="displayName"
-      placeholder="نام نمایشی را وارد کنید"
-      value={values.displayName}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={touched.displayName && errors.displayName}
-      className="text-right"
-    />
-  </div>
+  Object.entries(formFiles).forEach(([key, files]) => {
+    for (let i = 0; i < files.length; i++) {
+      formData.append(key, files[i]);
+    }
+  });
 
-  {/* زون تحت پوشش و شماره تلفن کنار هم */}
-  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-   
-    <div>
-      <Label>
-        شماره تلفن <span className="text-error-500">*</span>
-      </Label>
-      <Input
-        type="text"
-        name="phoneNumber"
-        placeholder=" شماره تلفن را وارد کنید"
-        value={values.phoneNumber}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={touched.phoneNumber && errors.phoneNumber}
-        className="text-right"
-      />
+  console.log("FormData آماده ارسال است", formData);
+};
+
+
+return (
+  <Formik
+    initialValues={{
+      toDate:"",
+      fromDate:"",
+      displayName: "",
+      phoneNumber: "",
+      phonePrefix: "",
+      email: "",
+      password: "",
+      inviteCode: "",
+      terms: false,
+    }}
+    onSubmit={handleSubmit}
+  >
+    {({
+      values,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      touched,
+      errors,
+      setFieldValue,
+    }) => (
+<form
+  onSubmit={handleSubmit}
+  className="w-full min-h-[70vh] flex flex-col items-stretch justify-center gap-4"
+>
+  {/* دو ستون کنار هم */}
+  <div className="w-full flex flex-col md:flex-row gap-4">
+    {/* ستون اول: اطلاعات مبدا/مقصد و درخواست */}
+    <div className="w-full md:w-1/2 bg-gray-100  p-6 rounded-[16px]   border border-gray-300 shadow-initial">
+      <div className="flex flex-col md:flex-row gap-4">
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="phonePrefix1"
+          options={countryList}
+          placeholder="کشور مبدا"
+          label="کشور مبدا"
+        />
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="phonePrefix2"
+          options={countryList}
+          placeholder="شهر مبدا"
+          label="شهر مبدا"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="destinationCountry"
+          options={countryList}
+          placeholder="کشور مقصد"
+          label="کشور مقصد"
+        />
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="destinationCity"
+          options={countryList}
+          placeholder="شهر مقصد"
+          label="شهر مقصد"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="mainOriginCityId"
+          options={countryList}
+          placeholder="پرواز از"
+          label="مبدا پرواز"
+        />
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="mainDestinationCityId"
+          options={countryList}
+          placeholder="مقصد پرواز"
+          label="مقصد پرواز را انتخاب کنید"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <MultiDatePicker
+          placeholder="زمان حرکت از مبدا"
+          label="حرکت از مبدا"
+          name="fromDate"
+          value={values.fromDate}
+          setFieldValue={setFieldValue}
+        />
+        <MultiDatePicker
+          placeholder="زمان رسیدن به مقصد"
+          label="رسیدن به مقصد"
+          name="toDate"
+          value={values.toDate}
+          setFieldValue={setFieldValue}
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="requestType"
+          options={RequestType}
+          placeholder="نوع درخواست"
+          label="نوع درخواست"
+        />
+        <TextField
+          name="priceOffer"
+          innerClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg text-right"
+          label="مبلغ پیشنهادی"
+          placeholder="هزینه پیشنهادی خود را وارد کنید"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <AutoComplete
+          inputClassName="rounded-lg border border-gray-300 text-right"
+          className="rounded-lg w-full"
+          name="itemCategory"
+          options={ItemList}
+          placeholder="دسته بندی بسته"
+          label="دسته بندی بسته را انتخاب کنید"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mt-2">
+        <TextArea
+          innerClassName="bg-white rounded-[13px] border border-gray-300 mt-2"
+          className="rounded-[13px]"
+          placeholder="آدرس"
+          name="address"
+          label="توضیحات"
+        />
+      </div>
     </div>
-     <div>
-    <Label>
-      نام نمایشی <span className="text-error-500">*</span>
-    </Label>
-    <Input
-      type="text"
-      name="displayName"
-      placeholder="نام نمایشی را وارد کنید"
-      value={values.displayName}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={touched.displayName && errors.displayName}
-      className="text-right"
-    />
-  </div>
-  </div>
 
-  {/* ایمیل */}
-  <div>
-    <Label>
-      ایمیل <span className="text-error-500">*</span>
-    </Label>
-    <Input
-      type="email"
-      name="email"
-      placeholder="ایمیل خود را وارد کنید"
-      value={values.email}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={touched.email && errors.email}
-      className="text-right"
-    />
-  </div>
+    {/* ستون دوم: آپلود تصاویر و اطلاعات بار */}
+    <div className="w-full md:w-1/2 bg-gray-100   border border-gray-300  p-6 rounded-[16px] shadow-initial space-y-4">
+      <div>
+        <ImageUploader name="file1" label="آپلود تصویر بلیط" onChange={handleFileChange} />
+        <ImageUploader name="file2" label="آپلود تصویر بار" onChange={handleFileChange} />
+      </div>
 
-  {/* کد دعوت */}
-  <div>
-    <Label>
-      کد دعوت <span className="text-error-500">*</span>
-    </Label>
-    <Input
-      type="text"
-      name="inviteCode"
-      placeholder="در صورتی که کد دعوت دارید آن را وارد کنید"
-      value={values.inviteCode}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={touched.inviteCode && errors.inviteCode}
-      className="text-right"
-    />
-  </div>
+      <p className="font-semibold">اطلاعات بار</p>
 
-  {/* رمز عبور */}
-  <div>
-    <Label>
-      رمز عبور <span className="text-error-500">*</span>
-    </Label>
-    <div className="relative">
-      <Input
-        name="password"
-        placeholder="رمز عبور را وارد کنید"
-        type={showPassword ? "text" : "password"}
-        value={values.password}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={touched.password && errors.password}
-        className="text-right"
-      />
-      <span
-        onClick={() => setShowPassword(!showPassword)}
-        className="absolute z-30 -translate-y-1/2 cursor-pointer left-4 top-1/2"
-      >
-        {showPassword ? (
-          <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-        ) : (
-          <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-        )}
-      </span>
+      <div className="bg-white rounded-[16px] p-3 mt-3 space-y-2">
+        {/* ردیف ۱ */}
+        <div className="flex w-full gap-4 mt-2">
+          <div className="w-1/2">
+            <TextField
+              name="maxWeight"
+              innerClassName="rounded-lg border border-gray-300 text-right mt-2"
+              className="rounded-lg text-right"
+              label="حداکثر وزن (kg)"
+              placeholder="حداکثر وزن را به کیلوگرم وارد کنید"
+            />
+          </div>
+          <div className="w-1/2">
+            <TextField
+              name="maxLength"
+              innerClassName="rounded-lg border border-gray-300 text-right mt-2"
+              className="rounded-lg text-right"
+              label="حداکثر طول (cm)"
+              placeholder="حداکثر طول را وارد کنید"
+            />
+          </div>
+        </div>
+
+        {/* ردیف ۲ */}
+        <div className="flex w-full gap-4 mt-2">
+          <div className="w-1/2">
+            <TextField
+              name="maxWidth"
+              innerClassName="rounded-lg border border-gray-300 text-right mt-2"
+              className="rounded-lg text-right"
+              label="حداکثر عرض (cm)"
+              placeholder="حداکثر عرض را وارد کنید"
+            />
+          </div>
+          <div className="w-1/2">
+            <TextField
+              name="maxHeight"
+              innerClassName="rounded-lg border border-gray-300 text-right mt-2"
+              className="rounded-lg text-right"
+              label="حداکثر ارتفاع (cm)"
+              placeholder="حداکثر ارتفاع را وارد کنید"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  {/* قوانین و مقررات */}
-<div className="flex items-center gap-3 justify-end text-right">
-  
-  <p className="inline-block font-normal text-gray-500 dark:text-gray-400 text-xs text-right">
-    با ساخت حساب کاربری، شما با{" "}
-    <span className="text-gray-800 dark:text-white/90">قوانین</span> و{" "}
-    <span className="text-gray-800 dark:text-white/90">حریم خصوصی</span> موافقت می‌کنید
-  </p>
-  <Checkbox
-    className="w-5 h-5"
-    checked={values.terms}
-    onChange={(val) => setFieldValue("terms", val)}
-  />
-</div>
-
-  {touched.terms && errors.terms && (
-    <p className="text-xs text-error-500 -mt-2">{errors.terms}</p>
-  )}
-
-  <div>
-    <Button
+  {/* دکمه ارسال زیر دو ستون */}
+  <div className="flex  w-full mt-2">
+    <button
       type="submit"
-      className="w-full"
-      size="sm"
+      className="bg-black text-white px-8 py-3 rounded-lg"
     >
-      ثبت‌نام
-    </Button>
+      ارسال فرم
+    </button>
   </div>
 </form>
 
-          )}
-        </Formik>
+    )}
+  </Formik>
+);
 
-    </div>
-    
-  );
 };
 
-export default SimpleSignUpForm;
+export default NewRequsetForm;

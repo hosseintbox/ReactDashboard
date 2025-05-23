@@ -1,60 +1,80 @@
-import React from "react";
+import React, { ReactNode } from "react";
+import { useField, useFormikContext } from "formik";
+import { FieldTheme } from "../../../models/enums/FieldTheme";
 
-interface TextareaProps {
-  placeholder?: string; // Placeholder text
-  rows?: number; // Number of rows
-  value?: string; // Current value
-  onChange?: (value: string) => void; // Change handler
-  className?: string; // Additional CSS classes
-  disabled?: boolean; // Disabled state
-  error?: boolean; // Error state
-  hint?: string; // Hint text to display
+interface Props {
+  name: string;
+  placeholder?: string;
+  label?: string;
+  className?: string;
+  help?: string | ReactNode;
+  icon?: ReactNode;
+  readonly?: boolean;
+  innerClassName?:string;
+  theme?: FieldTheme;
+  value?:string;
+  rows?: number;
 }
 
-const TextArea: React.FC<TextareaProps> = ({
-  placeholder = "Enter your message", // Default placeholder
-  rows = 3, // Default number of rows
-  value = "", // Default value
-  onChange, // Callback for changes
-  className = "", // Additional custom styles
-  disabled = false, // Disabled state
-  error = false, // Error state
-  hint = "", // Default hint text
+const TextArea: React.FC<Props> = ({
+  placeholder,
+  label = "",
+  className = "",
+  help,
+  icon,
+  name,
+  readonly = false,
+  innerClassName ='',
+  theme = FieldTheme.Primary,
+  rows = 4, 
 }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (onChange) {
-      onChange(e.target.value);
-    }
+  const [field, { error, touched }] = useField(name);
+  const { setFieldValue } = useFormikContext(); 
+
+  const handleClear = () => {
+    setFieldValue(name, ""); 
   };
 
-  let textareaClasses = `w-full rounded-lg border px-4 py-2.5 text-sm shadow-theme-xs focus:outline-hidden ${className} `;
-
-  if (disabled) {
-    textareaClasses += ` bg-gray-100 opacity-50 text-gray-500 border-gray-300 cursor-not-allowed opacity40 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700`;
-  } else if (error) {
-    textareaClasses += ` bg-transparent  border-gray-300 focus:border-error-300 focus:ring-3 focus:ring-error-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-error-800`;
-  } else {
-    textareaClasses += ` bg-transparent text-gray-900 dark:text-gray-300 text-gray-900 border-gray-300 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800`;
-  }
-
   return (
-    <div className="relative">
-      <textarea
-        placeholder={placeholder}
-        rows={rows}
-        value={value}
-        onChange={handleChange}
-        disabled={disabled}
-        className={textareaClasses}
-      />
-      {hint && (
-        <p
-          className={`mt-2 text-sm ${
-            error ? "text-error-500" : "text-gray-500 dark:text-gray-400"
-          }`}
-        >
-          {hint}
-        </p>
+    <div className={`form-control w-full ${className} `}>
+      {label && (
+        <label className="label text-gray-900 font-semibold text-sm">
+          {label}
+        </label>
+      )}
+      <div
+        className={`flex items-center relative ${innerClassName} 
+        `}
+      >
+        {icon && <div className="p-2 absolute right-4 top-2">{icon}</div>}{" "}
+        <textarea
+          {...field}
+          placeholder={placeholder}
+          rows={rows}
+          className={`textarea  p-3 w-full text-base text-[#6B7280] font-medium ${
+            theme === FieldTheme.Primary ? "bg-[#FFF]" : "bg-[#F3F4F6]"
+          } ${
+            icon && "pr-12"
+          } rounded-[12px] h-[100px] max-with-[120px] focus-within:outline-[0px] focus-within:border-gray-400 ${
+            touched && error ? "input-error" : ""
+          } ${readonly ? "hover:cursor-default border-none" : ""} `}
+          disabled={readonly}
+        />
+        {/* Clear button */}
+        {field.value && !readonly && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="absolute left-4 top-2 text-gray-600 hover:text-gray-800 "
+          >
+            &times;
+          </button>
+        )}
+      </div>
+      {touched && error ? (
+        <p className="text-error text-sm mt-1">{error}</p>
+      ) : (
+        help && <p className="text-gray-500 text-sm mt-1">{help}</p>
       )}
     </div>
   );

@@ -142,7 +142,7 @@ const AutoComplete: React.FC<Props> = ({
   return (
     <div className={`form-control w-full ${className}`} ref={wrapperRef}>
       {label && (
-        <label className="label text-gray-900 font-semibold text-sm">
+        <label className="label text-right block text-gray-900 font-semibold text-sm">
           {label}
         </label>
       )}
@@ -175,29 +175,30 @@ const AutoComplete: React.FC<Props> = ({
             </button>
           )}
         </div>
-        {showOptions && (
-          <ul className="absolute z-10 w-full bg-white border-[1px] border-gray-200 rounded-[16px] shadow max-h-40 overflow-y-auto">
-            {isLoading ? (
-              <div className="flex justify-center items-center py-2">
-                <Loading />
-              </div>
-            ) : filteredOptions?.length > 0 ? (
-              filteredOptions.map((option) => (
-                <li
-                  key={option.value}
-                  className="px-4 py-2 font-semibold text-sm cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleOptionSelect(option)}
-                >
-                  {option.label}
-                </li>
-              ))
-            ) : (
-              <li className="px-4 py-2 font-semibold text-sm text-gray-500">
-                داده‌ای موجود نیست
-              </li>
-            )}
-          </ul>
-        )}
+      {showOptions && (
+  <ul className="absolute z-10 w-full bg-white border-[1px] border-gray-200 rounded-[16px] shadow max-h-40 overflow-y-auto text-right">
+    {isLoading ? (
+      <div className="flex justify-center items-center py-2">
+        <Loading />
+      </div>
+    ) : filteredOptions?.length > 0 ? (
+      filteredOptions.map((option) => (
+        <li
+          key={option.value}
+          className="px-4 py-2 font-semibold text-sm cursor-pointer hover:bg-gray-100"
+          onClick={() => handleOptionSelect(option)}
+        >
+          {option.label}
+        </li>
+      ))
+    ) : (
+      <li className="px-4 py-2 font-semibold text-sm text-gray-500">
+        داده‌ای موجود نیست
+      </li>
+    )}
+  </ul>
+)}
+
         {isMulty && (
           <div className="flex flex-wrap gap-[8px] mt-2">
             {multySelect.map((value) => (

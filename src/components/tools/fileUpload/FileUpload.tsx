@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { useField, useFormikContext } from "formik";
 import { FieldTheme } from "../../../models/enums/FieldTheme";
-import {ReactComponent as UploadIcon} from "../../../components/icons/svg/uploadIcon.svg";
+// import {ReactComponent as UploadIcon} from "../../../components/icons/svg/uploadIcon.svg";
 interface Props {
     name: string;
     label?: string;
@@ -59,7 +59,7 @@ const FileUpload: React.FC<Props> = ({
                 <label
                     htmlFor={`file-upload-${name}`}
                     className={` ${readonly ? "cursor-not-allowed" : "cursor-pointer"} h-[48px] hover:scale-[99%] active:scale-100 transition-all w-full border-dashed border-gray-300 border bg-white text-[#111928] font-bold rounded-lg py-2 text-sm flex justify-center items-center`}>
-                    {field.value ? field.value.name : <span className={'flex items-center gap-2'}><UploadIcon/>بارگذاری فایل</span>}
+                    {field.value ? field.value.name : <span className={'flex items-center gap-2'}>بارگذاری فایل</span>}
                 </label>
 
                 {/* Clear button */}

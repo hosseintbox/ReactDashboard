@@ -33,9 +33,9 @@ const navItems: NavItem[] = [
     path: "/NewRequest"
   },
   {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
+    icon: <ListIcon />,
+    name: "لیست درخواست های ثبت شده",
+    path: "/RequestList",
   },
   {
     icon: <UserCircleIcon />,

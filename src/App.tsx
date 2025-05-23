@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
-import NewRequest from "./pages/Request/NewRequest";
+import NewRequest from "./pages/Request/NewRequest/NewRequest";
 import NotFound from "./pages/OtherPage/NotFound";
 import UserProfiles from "./pages/UserProfiles";
 import Videos from "./pages/UiElements/Videos";
@@ -21,6 +21,7 @@ import AppLayout from "./layout/AppLayout";
 import { queryClient } from "./setting/reactQuery/QueryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ScrollToTop } from "./components/common/ScrollToTop";
+import RequestList from "./pages/Request/RequestList/RequestList";
 import Home from "./pages/Dashboard/Home";
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
+            <Route path="/RequestList" element={<RequestList/>}/>
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />

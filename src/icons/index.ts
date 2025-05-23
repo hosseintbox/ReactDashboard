@@ -54,8 +54,14 @@ import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
 import { ReactComponent as CloseRedIcon } from "./closeRedIcon.svg?react";
 import {ReactComponent as RequestIcon} from "./requestIcon.svg?react";
+import { ReactComponent as VerticalArrow } from "./vertical-arrow.svg?react";
+import { ReactComponent as DownArrow } from "./down-arrow.svg?react";
+import { ReactComponent as UpArrow } from "./up-arrow.svg?react";
 
 export {
+  DownArrow,
+  UpArrow,
+  VerticalArrow,
   RequestIcon,
   CloseRedIcon,
   ErrorHexaIcon,

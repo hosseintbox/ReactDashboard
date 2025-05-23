@@ -41,7 +41,7 @@ const TextField: React.FC<Props> = ({
 
   return (
     <>
-      <div className={`form-control w-full ${className} rounded-[13px] `}>
+      <div className={`form-control w-full ${className} `}>
         {label && (
           <label
             className={`label text-gray-900 font-semibold text-sm ${labelClassName}`}
@@ -60,14 +60,14 @@ const TextField: React.FC<Props> = ({
             {...field}
             type={type}
             placeholder={placeholder}
-            className={`input ${
-              readonly ? "hover:cursor-default border-none " : ""
-            } w-full text-base text-[#6B7280] font-medium ${
-              theme === FieldTheme.Primary ? "bg-[#FFF]" : "bg-[#F3F4F6]"
-            } ${
-              icon && "pr-16"
-            } rounded-[12px] h-[48px] focus-within:outline-[0px]  focus-within:border-gray-400 
-          `}
+          className={`input ${
+  readonly ? "hover:cursor-default border-none " : ""
+} w-full text-base text-[#6B7280] font-medium ${
+  theme === FieldTheme.Primary ? "bg-[#FFF]" : "bg-[#F3F4F6]"
+} ${
+  icon ? "pr-16" : "pr-4"
+} pl-4 rounded-lg h-[43px] focus-within:outline-[0px]  focus-within:border-gray-400`}
+
             disabled={readonly}
           />
           {field.value && !readonly && (
