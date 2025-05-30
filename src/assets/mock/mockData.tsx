@@ -1,8 +1,7 @@
 import React from "react";
 import TableCell from "../../components/tools/table/TableCell";
 import Badge from "../../components/tools/tags/Badge";
-import { Icon } from "leaflet";
-import { ReactComponent as ArrowIcon } from "../../components/icons/svg/arrow-down.svg";
+
 
 export const whiteChartData = [
     {name: 'MH1', value: 0},
@@ -17,6 +16,88 @@ export const whiteChartData = [
     {name: 'MH10', value: 0},
     {name: 'MH11', value: 0},
 ]
+ export const TableData = [
+  {
+    id: '1',
+    requestType: 'حمل کننده',
+    originCityTitle: 'تهران',
+    destinationCityTitle: 'هانبورگ',
+    mainOriginCityTitle: 'تهران',
+    mainDestinationCityTitle: 'هانوفه',
+    departureDate: '2025-05-23',
+    arrivalDate: '2025-05-26',
+  },
+  {
+    id: '2',
+    requestType: 'فرستنده',
+    originCityTitle: 'اصفهان',
+    destinationCityTitle: 'برلین',
+    mainOriginCityTitle: 'اصفهان',
+    mainDestinationCityTitle: 'کلن',
+    departureDate: '2025-06-01',
+    arrivalDate: '2025-06-05',
+  },
+  {
+    id: '3',
+    requestType: 'حمل کننده',
+    originCityTitle: 'مشهد',
+    destinationCityTitle: 'دوسلدورف',
+    mainOriginCityTitle: 'مشهد',
+    mainDestinationCityTitle: 'مونیخ',
+    departureDate: '2025-06-10',
+    arrivalDate: '2025-06-15',
+  },
+  {
+    id: '4',
+    requestType: 'فرستنده',
+    originCityTitle: 'تبریز',
+    destinationCityTitle: 'فرانکفورت',
+    mainOriginCityTitle: 'تبریز',
+    mainDestinationCityTitle: 'اشتوتگارت',
+    departureDate: '2025-07-01',
+    arrivalDate: '2025-07-06',
+  },
+  {
+    id: '5',
+    requestType: 'حمل کننده',
+    originCityTitle: 'شیراز',
+    destinationCityTitle: 'درسدن',
+    mainOriginCityTitle: 'شیراز',
+    mainDestinationCityTitle: 'هامبورگ',
+    departureDate: '2025-07-15',
+    arrivalDate: '2025-07-20',
+  },
+  {
+    id: '6',
+    requestType: 'فرستنده',
+    originCityTitle: 'رشت',
+    destinationCityTitle: 'اشتوتگارت',
+    mainOriginCityTitle: 'رشت',
+    mainDestinationCityTitle: 'نورنبرگ',
+    departureDate: '2025-08-01',
+    arrivalDate: '2025-08-06',
+  },
+  {
+    id: '7',
+    requestType: 'حمل کننده',
+    originCityTitle: 'اهواز',
+    destinationCityTitle: 'مونیخ',
+    mainOriginCityTitle: 'اهواز',
+    mainDestinationCityTitle: 'فرایبورگ',
+    departureDate: '2025-08-10',
+    arrivalDate: '2025-08-15',
+  },
+  {
+    id: '8',
+    requestType: 'فرستنده',
+    originCityTitle: 'کرمان',
+    destinationCityTitle: 'نورنبرگ',
+    mainOriginCityTitle: 'کرمان',
+    mainDestinationCityTitle: 'درسدن',
+    departureDate: '2025-09-01',
+    arrivalDate: '2025-09-06',
+  },
+];
 
 export const cards = {
   zone: [
@@ -661,7 +742,7 @@ export const buttons = {
       id: "3",
       value: 3,
       label: "پنجره زمانی",
-      icon: <ArrowIcon />,
+      // icon: <ArrowIcon />,
       category: "status",
       options: [
         { id: "open", label: "12 تا 14" },

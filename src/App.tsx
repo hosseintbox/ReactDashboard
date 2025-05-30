@@ -22,6 +22,8 @@ import { queryClient } from "./setting/reactQuery/QueryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import RequestList from "./pages/Request/RequestList/RequestList";
+import DestinationRequestForm from "./components/request/DestinationRequestForm";
+import OriginRequest from "./pages/Request/OriginRequest/OriginRequest";
 import Home from "./pages/Dashboard/Home";
 
 export default function App() {
@@ -37,6 +39,8 @@ export default function App() {
 
             {/* Others Page */}
             <Route path="/NewRequest" element={<NewRequest/>}/>
+            <Route path="/OriginRequest" element={<OriginRequest/>}/>
+                    <Route path="/DestinationRequest" element={<DestinationRequestForm/>}/>
              <Route path="/Home" element={<Home />} />
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
