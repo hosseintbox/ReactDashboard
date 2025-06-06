@@ -24,6 +24,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import RequestList from "./pages/Request/RequestList/RequestList";
 import DestinationRequestForm from "./components/request/DestinationRequestForm";
 import OriginRequest from "./pages/Request/OriginRequest/OriginRequest";
+import RequestDetail from "./pages/Request/RequestDetail/RequestDetail";
 import Home from "./pages/Dashboard/Home";
 
 export default function App() {
@@ -40,8 +41,9 @@ export default function App() {
             {/* Others Page */}
             <Route path="/NewRequest" element={<NewRequest/>}/>
             <Route path="/OriginRequest" element={<OriginRequest/>}/>
-                    <Route path="/DestinationRequest" element={<DestinationRequestForm/>}/>
-             <Route path="/Home" element={<Home />} />
+            <Route path="/DestinationRequest" element={<DestinationRequestForm/>}/>
+            <Route path= {`/RequestDetail/:id`} element={<RequestDetail/>}/>
+            <Route path="/Home" element={<Home />} />
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />

@@ -120,7 +120,7 @@ function DestinationRequestForm() {
   const navigate = useNavigate();
 
   const handleButtonClick = (id: string) => {
-    navigate(`/parcelDetail/${id}`);
+    navigate(`/RequestDetail/${id}`);
     toggle();
   };
 

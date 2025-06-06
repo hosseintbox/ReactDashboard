@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
+  OriginRequestForm,
   RequestIcon ,
   BoxCubeIcon,
   CalenderIcon,
@@ -34,30 +35,19 @@ const navItems: NavItem[] = [
   },
   {
     icon: <ListIcon />,
-    name: "لیست درخواست های ثبت شده",
+    name: "لیست درخواست های ثبت شده برای من ",
     path: "/RequestList",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
-    path: "/profile",
-  },
+  icon: <OriginRequestForm/>,
+  name:"لیست درخواست های ثبت شده از مبدا من" ,
+  path:"/OriginRequest"
+  } ,
   {
-    name: "Forms",
-    icon: <ListIcon />,
-    path: "/form-elements"
-  },
-  {
-    name: "Tables",
-    icon: <TableIcon />,
-  path: "/basic-tables"
-  },
-  {
-    name: "Pages",
-    icon: <PageIcon />,
-   path: "/blank"
-
-  },
+  icon: <OriginRequestForm className=" rotate-90"/>,
+  name:"لیست درخواست های ثبت شده به مقصد شما" ,
+  path:"/DestinationRequest"
+  }
 ];
 
 const othersItems: NavItem[] = [
@@ -197,7 +187,7 @@ const AppSidebar: React.FC = () => {
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
-            : "w-[90px]"
+            : "w-[70px]"
         }
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}

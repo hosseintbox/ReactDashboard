@@ -190,7 +190,7 @@ const paginatedData = sortedData;
             return (
               <div
                 key={rowId ?? rowIndex}
-                className={`flex items-center ${rowClassName} bg-white relative my-2 p-3 rounded-[16px] cursor-pointer ${
+                className={`flex items-center ${rowClassName} bg-white relative my-1 px-3 py-1 rounded-[16px] cursor-pointer ${
                   isSelected ? "border-2 border-[#FF7959]" : ""
                 }`}
                 onClick={(e) => {

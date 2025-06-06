@@ -1,17 +1,51 @@
+// import React from 'react'
+
+// function RequestDetailForm() {
+//   return (
+//     <div>
+      
+//     </div>
+//   )
+// }
+
+// export default RequestDetailForm
+
 import { useState } from "react";
 import { Formik } from "formik";
 import MultiDatePicker from "../../components/tools/datepicker/MultiDatePicker";
 import TextArea from "../form/input/TextArea";
 import ImageUploader from "../tools/fileUpload/ImageUploader";
-import { HttpMethod } from "../../models/enums/HttpMethod";
-import { useReactMutation , useReactQuery } from "../../hooks/query/useReactQuery";
-import { CreateRequest  ,TransportableItem ,GetCountries ,GetCities} from "../../setting/ApiUrl";
 import TextField from "../tools/textField/TextField";
 import * as Yup from "yup";
 import AutoComplete from "../tools/autoComplete/AutoComplete";
-// import Button from "../ui/button/Button";
-// import Label from "../form/Label";
+import Button from "../ui/button/Button";
 
+const countryList = [
+  {
+    value:1,
+    label:'آلمان'
+  },
+   {
+    value:1,
+    label:'کانادا'
+  }, {
+    value:1,
+    label:'انگلیس'
+  }
+]
+const ItemList = [
+  {
+    value:1,
+    label:'پت'
+  },
+   {
+    value:1,
+    label:'مدارک'
+  }, {
+    value:1,
+    label:'خوراک'
+  }
+]
 const RequestType =[
    {
     value:1,
@@ -22,41 +56,18 @@ const RequestType =[
     label:'ارسال کننده'
   }
 ]
-const NewRequsetForm = () => {
-  const [selectedOriginCountry, setSelectedOriginCountry] = useState<Number>();
+const RequestDetailForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [formFiles, setFormFiles] = useState<{ [key: string]: FileList }>({});
-  const apiDetails = {
-    url:CreateRequest,
-    method: HttpMethod.POST,
-  };
-  const {data:countryData } =useReactQuery({
-    url:GetCountries,
-    method: HttpMethod.GET,
-    body: {}, 
-  });
 
-  console.log('selectedOriginCountry' ,selectedOriginCountry)
-  const { data, isLoading, isError, error:itemError, refetch } = useReactQuery({
-    url:TransportableItem,
-    method: HttpMethod.GET,
-    body: {},
-  });
-
-  console.log('data',data?.data?.objectResult?.listItems
-)
   const handleFileChange = (name: string, files: FileList) => {
     setFormFiles((prev) => ({ ...prev, [name]: files }));
   };
-const { mutate, isPending, isSuccess, error } = useReactMutation(
-    apiDetails,
-    (res) => {
-      console.log("✅ موفق بود:", res);
-    },
-    (err) => {
-      console.log("❌ خطا:", err);
-    }
-  );
-
+  const validationSchema = Yup.object({
+    email: Yup.string().email("ایمیل نامعتبر است").required("ایمیل الزامی است"),
+    password: Yup.string().min(6, "حداقل ۶ کاراکتر").required("رمز عبور الزامی است"),
+    terms: Yup.boolean().oneOf([true], "پذیرش قوانین الزامی است"),
+  });
 const handleSubmit = (values: any) => {
   const formData = new FormData();
 
@@ -70,31 +81,10 @@ const handleSubmit = (values: any) => {
       formData.append(key, files[i]);
     }
   });
- mutate(formData);
+
   console.log("FormData آماده ارسال است", formData);
 };
 
-const ItemList =data?.data?.objectResult?.listItems.map((item:any)=>(
-  {
-    value:item.value,
-    label:item.label
-  }));
-const countryList =countryData?.data?.objectResult?.listItems.map((item:any)=>(
-{
-    value:item.value,
-    label:item.label
-}));
-const { data: cityData } = useReactQuery({
-  url: GetCities,
-  method: HttpMethod.GET,
-  body: {
-    model: {
-      id: selectedOriginCountry,
-    },
-  },
-  // فقط زمانی فعال باشد که id مقدار داشته باشد
-  enabled: !!selectedOriginCountry,
-});
 
 return (
   <Formik
@@ -124,7 +114,9 @@ return (
   onSubmit={handleSubmit}
   className="w-full min-h-[70vh] flex flex-col items-stretch justify-center gap-4"
 >
+  {/* دو ستون کنار هم */}
   <div className="w-full flex flex-col md:flex-row gap-4">
+    {/* ستون اول: اطلاعات مبدا/مقصد و درخواست */}
     <div className="w-full md:w-1/2 bg-gray-100  p-6 rounded-[16px]   border border-gray-300 shadow-initial">
       <div className="flex flex-col md:flex-row gap-4">
         <AutoComplete
@@ -132,7 +124,6 @@ return (
           className="rounded-lg w-full"
           name="phonePrefix1"
           options={countryList}
-          onChange={(values :any)=>setSelectedOriginCountry(Number(values.value))}
           placeholder="کشور مبدا"
           label="کشور مبدا"
         />
@@ -298,7 +289,6 @@ return (
     </div>
   </div>
 
-  {/* دکمه ارسال زیر دو ستون */}
   <div className="flex  w-full mt-2">
     <button
       type="submit"
@@ -315,4 +305,4 @@ return (
 
 };
 
-export default NewRequsetForm;
+export default RequestDetailForm;

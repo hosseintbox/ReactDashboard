@@ -9,7 +9,7 @@ export default function MonthlyTarget() {
   const chartData = [
     { label: "Marketing", value: 75 },
     { label: "Sales", value: 60 },
-    { label: "Growth", value: 90 },
+
   ];
   
   const series = [75];
@@ -100,7 +100,7 @@ export default function MonthlyTarget() {
   }
   return (
     <div className="rounded-2xl h-full border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
+      <div className="px-5 max-h-[300px] bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
@@ -136,7 +136,7 @@ export default function MonthlyTarget() {
         </div>
 <div className="flex flex-col sm:flex-row sm:justify-between sm:gap-0 gap-6 mt-6">
   {chartData.map((data, index) => (
-    <div key={index} className="w-full sm:w-1/3 text-center">
+    <div key={index} className="w-full sm:w-1/2 text-center">
       <Chart
         options={{
           ...options,
@@ -146,9 +146,9 @@ export default function MonthlyTarget() {
         type="radialBar"
         height={180}
       />
-      <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+      {/* <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
         {data.label}
-      </p>
+      </p> */}
     </div>
   ))}
 </div>

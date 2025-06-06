@@ -39,7 +39,7 @@ import { ReactComponent as CopyIcon } from "./copy.svg?react";
 import { ReactComponent as ChevronLeftIcon } from "./chevron-left.svg?react";
 import { ReactComponent as UserCircleIcon } from "./user-circle.svg?react";
 import { ReactComponent as TaskIcon } from "./task-icon.svg?react";
-import { ReactComponent as ListIcon } from "./list.svg?react";
+import { ReactComponent as ListIcon } from "./listIcon.svg?react";
 import { ReactComponent as TableIcon } from "./table.svg?react";
 import { ReactComponent as PageIcon } from "./page.svg?react";
 import { ReactComponent as PieChartIcon } from "./pie-chart.svg?react";
@@ -47,6 +47,7 @@ import { ReactComponent as BoxCubeIcon } from "./box-cube.svg?react";
 import { ReactComponent as PlugInIcon } from "./plug-in.svg?react";
 import { ReactComponent as DocsIcon } from "./docs.svg?react";
 import { ReactComponent as MailIcon } from "./mail-line.svg?react";
+import {ReactComponent as OriginRequestForm } from "./airplanIcon.svg?react";
 import { ReactComponent as HorizontaLDots } from "./horizontal-dots.svg?react";
 import { ReactComponent as ChatIcon } from "./chat.svg?react";
 import { ReactComponent as MoreDotIcon } from "./moredot.svg?react";
@@ -59,6 +60,7 @@ import { ReactComponent as DownArrow } from "./down-arrow.svg?react";
 import { ReactComponent as UpArrow } from "./up-arrow.svg?react";
 
 export {
+  OriginRequestForm,
   DownArrow,
   UpArrow,
   VerticalArrow,

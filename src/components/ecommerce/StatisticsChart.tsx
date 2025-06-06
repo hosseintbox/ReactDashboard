@@ -122,7 +122,7 @@ export default function StatisticsChart() {
     },
   ];
     const handleButtonClick = (id: string) => {
-    navigate(`/parcelDetail/${id}`);
+    navigate(`/RequestDetail/${id}`);
     toggle();
   };
 const transformedData =

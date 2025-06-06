@@ -8,7 +8,7 @@
 // }
 
 export interface ApiResponse<T> {
-  data: T| null;
+  data: any;
   status: number;
   error?: string;
 }
