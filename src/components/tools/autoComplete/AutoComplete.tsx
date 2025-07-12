@@ -53,25 +53,30 @@ const AutoComplete: React.FC<Props> = ({
     setFilteredOptions(options);
   }, [options]);
 
-  // برای حالت تک انتخابی: اگر مقدار اولیه وجود داشته باشد، برچسب گزینه انتخاب شده تنظیم شود.
-  useEffect(() => {
-    if (field.value && !isMulty) {
-      const selectedOption = options.find((opt) => opt.value === field.value);
-      if (selectedOption) {
-        setSelectedLabel(selectedOption.label);
-      }
-    }
-  }, [field.value, options, isMulty]);
 
-  // اگر حالت چند انتخابی فعال باشد و field.value آرایه‌ای از مقادیر باشد، state انتخاب‌های چندگانه را مقداردهی اولیه می‌کنیم.
-  useEffect(() => {
-    if (isMulty && Array.isArray(field.value)) {
-      const selectedOptions = options.filter((opt) =>
-        field.value.includes(opt.value)
-      );
-      setMultySelect(selectedOptions);
+useEffect(() => {
+  if (!isMulty) {
+    const selectedOption = options?.find((opt) => opt.value === field.value);
+    if (selectedOption) {
+      setSelectedLabel(selectedOption.label);
+    } else {
+      setSelectedLabel(""); // مقدار خالی وقتی چیزی انتخاب نشده
     }
-  }, [field.value, options, isMulty]);
+  }
+}, [field.value, options, isMulty]);
+
+useEffect(() => {
+  if (isMulty && Array.isArray(field.value)) {
+    const selectedOptions = field.value
+      .map((val: any) => options?.find((opt) => opt.value === val))
+      .filter((opt): opt is IDropDown => opt !== undefined);
+    setMultySelect(selectedOptions);
+  } else if (isMulty) {
+    setMultySelect([]); // ریست در حالت آرایه خالی یا مقدار نامعتبر
+  }
+}, [field.value, options, isMulty]);
+
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -93,7 +98,7 @@ const AutoComplete: React.FC<Props> = ({
     setSelectedLabel(value);
     if (value) {
       setFilteredOptions(
-        options.filter((option) =>
+        options?.filter((option) =>
           option.label.toLowerCase().includes(value.toLowerCase())
         )
       );
@@ -103,33 +108,33 @@ const AutoComplete: React.FC<Props> = ({
     setShowOptions(true);
   };
 
-  const handleOptionSelect = (option: IDropDown) => {
-    if (isMulty) {
-      if (!multySelect.some((item) => item.value === option.value)) {
-        const updatedSelection = [...multySelect, option];
-        setMultySelect(updatedSelection);
-        // مقدار فرم فقط شامل مقادیر (value) می‌شود
-        setFieldValue(
-          name,
-          updatedSelection.map((item) => item.value)
-        );
-      }
-    } else {
-      setFieldValue(name, option.value);
-      setSelectedLabel(option.label);
+const handleOptionSelect = (option: IDropDown) => {
+  if (isMulty) {
+    if (!multySelect.some((item) => item.value === option.value)) {
+      const updatedSelection = [...multySelect, option];
+      setMultySelect(updatedSelection);
+      setFieldValue(
+        name,
+        updatedSelection?.map((item) => item.value)
+      );
     }
-    setShowOptions(false);
-    onChange?.(option);
-  };
+    setSelectedLabel("");      
+  } else {
+    setFieldValue(name, option.value);
+    setSelectedLabel(option.label);
+  }
+  setShowOptions(false);
+  onChange?.(option);
+};
 
   const handleRemove = (label: string) => {
-    const updatedSelection = multySelect.filter(
+    const updatedSelection = multySelect?.filter(
       (option) => option.label !== label
     );
     setMultySelect(updatedSelection);
     setFieldValue(
       name,
-      updatedSelection.map((item) => item.value)
+      updatedSelection?.map((item) => item.value)
     );
   };
 
@@ -138,6 +143,29 @@ const AutoComplete: React.FC<Props> = ({
       setShowOptions(true);
     }
   };
+
+  const handleBlur = () => {
+    if (isMulty && selectedLabel.trim()) {
+      const matchedOption = options.find(
+        (opt) => opt.label.toLowerCase() === selectedLabel.trim().toLowerCase()
+      );
+      if (
+        matchedOption &&
+        !multySelect.some((item) => item.value === matchedOption.value)
+      ) {
+        handleOptionSelect(matchedOption);
+        setSelectedLabel(""); // پاک کردن input بعد از انتخاب
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // جلوگیری از submit شدن فرم
+      handleBlur(); // روی Enter همان رفتار blur را انجام بده
+    }
+  };
+
 
   return (
     <div className={`form-control w-full ${className}`} ref={wrapperRef}>

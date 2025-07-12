@@ -35,7 +35,7 @@ const navItems: NavItem[] = [
   },
   {
     icon: <ListIcon />,
-    name: "لیست درخواست های ثبت شده برای من ",
+    name: " درخواست های تایید شده",
     path: "/RequestList",
   },
   {

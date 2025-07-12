@@ -5,6 +5,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
+import CustomUseDropDown from "../components/header/CustomUseDropDown";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -163,16 +164,15 @@ const AppHeader: React.FC = () => {
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
             <NotificationDropdown />
-            {/* <!-- Notification Menu Area --> */}
+            <CustomUseDropDown/>
           </div>
-          {/* <!-- User Area --> */}
-         
+
         </div>
  
      
 
       </div>
-    {isOpen && <UserDropdown isOpen={isOpen} setIsOpen={setIsOpen}/>}
+
     </header>
   );
 };
