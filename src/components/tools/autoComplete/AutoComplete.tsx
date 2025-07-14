@@ -180,12 +180,12 @@ const handleOptionSelect = (option: IDropDown) => {
           onClick={toggleDropdown}
         >
           {icon && <div className="p-2 absolute right-4 top-2">{icon}</div>}
-<input
-  type="text"
-  placeholder={placeholder}
-  value={!isMulty ? selectedLabel || "" : ""}
-  onChange={handleInputChange}
-  className={`input w-full text-base text-[#6B7280] font-medium 
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={!isMulty ? selectedLabel || "" : ""}
+            onChange={handleInputChange}
+            className={`input w-full text-base text-[#6B7280] font-medium 
               rounded-[12px] h-[40px] mt-[7px] focus-within:outline-[0px]  
               ${readonly ? "hover:cursor-default border-none" : ""}
               ${theme === FieldTheme.Primary ? "bg-[#FFF]" : "bg-[#F3F4F6]"} 
@@ -193,7 +193,7 @@ const handleOptionSelect = (option: IDropDown) => {
               pr-[14px]  // 👈 اضافه‌شده برای جلو آوردن placeholder
               text-right
               ${touched && error ? "input-error" : ""} ${inputClassName}`}
-/>
+          />
           {readonly === false && (
             <button
               type="button"
@@ -203,36 +203,36 @@ const handleOptionSelect = (option: IDropDown) => {
             </button>
           )}
         </div>
-      {showOptions && (
-  <ul className="absolute z-10 w-full bg-white border-[1px] border-gray-200 rounded-[16px] shadow max-h-40 overflow-y-auto text-right">
-    {isLoading ? (
-      <div className="flex justify-center items-center py-2">
-        <Loading />
-      </div>
-    ) : filteredOptions?.length > 0 ? (
-      filteredOptions.map((option) => (
-        <li
-          key={option.value}
-          className="px-4 py-2 font-semibold text-sm cursor-pointer hover:bg-gray-100"
-          onClick={() => handleOptionSelect(option)}
-        >
-          {option.label}
-        </li>
-      ))
-    ) : (
-      <li className="px-4 py-2 font-semibold text-sm text-gray-500">
-        داده‌ای موجود نیست
-      </li>
-    )}
-  </ul>
-)}
+        {showOptions && (
+          <ul className="absolute z-10 w-full bg-white border-[1px] border-gray-200 rounded-[16px] shadow max-h-40 overflow-y-auto text-right">
+            {isLoading ? (
+              <div className="flex justify-center items-center py-2">
+                <Loading />
+              </div>
+            ) : filteredOptions?.length > 0 ? (
+              filteredOptions.map((option) => (
+                <li
+                  key={option.value}
+                  className="px-4 py-2 font-semibold text-sm cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleOptionSelect(option)}
+                >
+                  {option.label}
+                </li>
+              ))
+            ) : (
+              <li className="px-4 py-2 font-semibold text-sm text-gray-500">
+                داده‌ای موجود نیست
+              </li>
+            )}
+          </ul>
+        )}
 
         {isMulty && (
           <div className="flex flex-wrap gap-[8px] mt-2">
             {multySelect.map((value) => (
               <div
                 key={value.value}
-                className="border-2 max-w-fit rounded-lg border-[#FF7959] bg-[#FF7F7E10] flex items-center text-[#FF7959] text-[12px] font-bold py-1 px-3 gap-1"
+                className="border-2 max-w-fit rounded-lg border-gray-500 bg-white flex items-center text-gray-500 text-[12px] font-bold py-1 px-3 gap-1"
               >
                 {value.label}
                 {!readonly && (

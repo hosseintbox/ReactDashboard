@@ -7,7 +7,6 @@ import { HttpMethod } from "../../models/enums/HttpMethod";
 import { useReactMutation , useReactQuery } from "../../hooks/query/useReactQuery";
 import { CreateRequest  ,TransportableItem ,GetCountries ,GetCities} from "../../setting/ApiUrl";
 import TextField from "../tools/textField/TextField";
-import * as Yup from "yup";
 import AutoComplete from "../tools/autoComplete/AutoComplete";
 // import Button from "../ui/button/Button";
 // import Label from "../form/Label";
@@ -23,10 +22,10 @@ const RequestType =[
   }
 ]
 const NewRequsetForm = () => {
-  const [selectedDestinationCountry, setSelectedDestinationCountry] = useState<Number>();
-  const [originAvailable,setOriginAvailable]= useState<any[]>([]);
+  const [selectedDestinationCountry, setSelectedDestinationCountry] = useState<number>();
+  const [originAvailable,setOriginAvailable]= useState<unknown[]>([]);
   const [destinationAvailable,setDestinationAvailable]=useState<any[]>([]);
-  const [selectedOriginCountry, setSelectedOriginCountry] = useState<Number>();
+  const [selectedOriginCountry, setSelectedOriginCountry] = useState<number>();
   const [formFiles, setFormFiles] = useState<{ [key: string]: FileList }>({});
   const apiDetails = {
     url:CreateRequest,
@@ -39,7 +38,7 @@ const NewRequsetForm = () => {
   });
 
   console.log('selectedOriginCountry' ,selectedOriginCountry)
-  const { data, isLoading, isError, error:itemError, refetch } = useReactQuery({
+  const { data  } = useReactQuery({
     url:TransportableItem,
     method: HttpMethod.GET,
     body: {},
@@ -50,7 +49,7 @@ const NewRequsetForm = () => {
   const handleFileChange = (name: string, files: FileList) => {
     setFormFiles((prev) => ({ ...prev, [name]: files }));
   };
-const { mutate, isPending, isSuccess, error } = useReactMutation(
+const { mutate } = useReactMutation(
     apiDetails,
     (res) => {
       console.log("✅ موفق بود:", res);
@@ -152,6 +151,13 @@ console.log('originAvailable',originAvailable)
 return (
   <Formik
     initialValues={{
+      originCityId:'',
+      destinationCityId:"",
+      departureDate:'',
+      arrivalDate:"",
+      RequestType:"",
+      suggestedPrice:'',
+      
       toDate:"",
       fromDate:"",
       displayName: "",
@@ -224,6 +230,7 @@ return (
         <div className=" flex flex-row gap-2">
        
           <AutoComplete
+          isMulty={true}
           inputClassName="rounded-lg border border-gray-300 text-right"
           className="rounded-lg w-full"
           name="mainOriginCityId"
@@ -357,6 +364,7 @@ return (
 
       <div className="flex flex-col md:flex-row gap-4 mt-2">
         <AutoComplete
+          isMulty={true}
           inputClassName="rounded-lg border border-gray-300 text-right"
           className="rounded-lg w-full"
           name="itemCategory"
